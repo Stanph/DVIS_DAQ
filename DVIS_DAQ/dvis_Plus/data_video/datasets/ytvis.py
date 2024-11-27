@@ -43,7 +43,9 @@ COCO_TO_OVIS = {
 BDD_SEG_TO_OVIS = {
     1:1, 2:1, 3:25, 4:25, 5:25, 6:25, 7:22, 8:21,
 }
-
+COCO_TO_PRW = {
+    1:1, 
+}
 
 YTVIS_CATEGORIES_2019 = [
     {"color": [220, 20, 60], "isthing": 1, "id": 1, "name": "person"},

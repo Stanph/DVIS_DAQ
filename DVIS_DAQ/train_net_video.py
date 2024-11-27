@@ -49,6 +49,8 @@ from detectron2.utils.logger import setup_logger
 from mask2former import add_maskformer2_config
 from mask2former_video import add_maskformer2_video_config
 from dvis_Plus import (
+    PRWVISDatasetMapper,
+    PRWVISEvaluator,
     YTVISDatasetMapper,
     CocoClipDatasetMapper,
     PanopticDatasetVideoMapper,
@@ -88,7 +90,7 @@ class Trainer(DefaultTrainer):
         if cfg.MODEL.MASK_FORMER.TEST.TASK == "vos":
             return None
 
-        evaluator_dict = {'vis': YTVISEvaluator, 'vss': VSSEvaluator, 'vps': VPSEvaluator, 'mots': UniYTVISEvaluator}
+        evaluator_dict = {'prwvis': PRWVISEvaluator,'vis': YTVISEvaluator, 'vss': VSSEvaluator, 'vps': VPSEvaluator, 'mots': UniYTVISEvaluator}
         assert cfg.MODEL.MASK_FORMER.TEST.TASK in evaluator_dict.keys()
         return evaluator_dict[cfg.MODEL.MASK_FORMER.TEST.TASK](dataset_name, cfg, True, output_folder)
 
@@ -98,6 +100,7 @@ class Trainer(DefaultTrainer):
                len(cfg.DATASETS.DATASET_NEED_MAP) == len(cfg.DATASETS.DATASET_TYPE)
         mappers = []
         mapper_dict = {
+            'prwvideo_instance': PRWVISDatasetMapper,
             'video_instance': YTVISDatasetMapper,
             'video_panoptic': PanopticDatasetVideoMapper,
             'video_semantic': SemanticDatasetVideoMapper,
@@ -127,6 +130,7 @@ class Trainer(DefaultTrainer):
     @classmethod
     def build_test_loader(cls, cfg, dataset_name, dataset_type):
         mapper_dict = {
+            'prwvideo_instance': PRWVISDatasetMapper,
             'video_instance': YTVISDatasetMapper,
             'video_panoptic': PanopticDatasetVideoMapper,
             'video_semantic': SemanticDatasetVideoMapper,
@@ -330,7 +334,7 @@ def main(args):
 
 if __name__ == "__main__":
     args = default_argument_parser().parse_args()
-    #args.dist_url = 'tcp://127.0.0.1:50263'
+    args.dist_url = 'tcp://127.0.0.1:50263'
     print("Command Line Args:", args)
     launch(
         main,

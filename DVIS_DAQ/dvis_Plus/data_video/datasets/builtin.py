@@ -12,6 +12,24 @@ import json
 from detectron2.data.datasets.builtin_meta import _get_builtin_metadata
 from detectron2.data.datasets.coco import register_coco_instances
 
+# from prw import (
+from .prw import (
+    register_prw_instances,
+    _get_prw_instances_meta,
+)
+
+# ==== Predefined splits for PRW ===========
+_PREDEFINED_SPLITS_PRW = {
+    "prw_train": ("prw/frames",
+                         "prw/annotation/train_pid.json"),
+    "prw_val": ("prw/frames",
+                       "prw/annotation/test_pid.json"),
+    "prw_test": ("prw/frames",
+                        "prw/annotation/test_pid.json"),
+    "prw_dev": ("prw/frames",
+                       "prw/annotation/train_pid.json"),
+}
+
 from .ytvis import (
     register_ytvis_instances,
     _get_ytvis_2019_instances_meta,
@@ -141,6 +159,17 @@ def register_all_coco_video(root):
             os.path.join(root, json_file) if "://" not in json_file else json_file,
             os.path.join(root, image_root),
         )
+        
+def register_all_prw(root):
+    for key, (image_root, json_file) in _PREDEFINED_SPLITS_PRW.items():
+        # Assume pre-defined datasets live in `./datasets`.
+        register_prw_instances(
+            key,
+            _get_prw_instances_meta(),
+            os.path.join(root, json_file) if "://" not in json_file else json_file,
+            os.path.join(root, image_root),
+        )
+
 
 def register_all_bdd_seg_track(root):
     for key, (image_root, json_file) in _PREDEFINED_SPLITS_BDD_SEG_TRACK.items():
@@ -205,6 +234,8 @@ if __name__.endswith(".builtin"):
     register_all_coco_video(_root)
     register_all_bdd_seg_track(_root)
     register_all_bdd2ovis_seg_track(_root)
+    register_all_prw(_root)
+    from . import prw
     from . import vps
     from . import vss
     register_all_sot(_root)

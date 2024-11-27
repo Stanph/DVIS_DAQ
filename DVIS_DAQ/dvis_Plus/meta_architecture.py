@@ -490,8 +490,9 @@ class DVIS_Plus_online(MinVIS):
 
         self.window_size = window_size
         self.task = task
-        assert self.task in ['vis', 'vss', 'vps'], "Only support vis, vss and vps !"
+        assert self.task in ['prwvis', 'vis', 'vss', 'vps'], "Only support vis, vss and vps !"
         inference_dict = {
+            'prwvis': self.inference_video_vis,
             'vis': self.inference_video_vis,
             'vss': self.inference_video_vss,
             'vps': self.inference_video_vps,

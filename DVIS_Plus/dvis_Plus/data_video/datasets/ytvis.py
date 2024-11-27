@@ -40,6 +40,10 @@ COCO_TO_OVIS = {
     1:1, 2:21, 3:25, 4:22, 5:23, 6:25, 8:25, 9:24, 17:3, 18:4, 19:5, 20:6, 21:7, 22:8, 23:9, 24:10, 25:11,
 }
 
+COCO_TO_PRW = {
+    1:1
+}
+
 YTVIS_CATEGORIES_2019 = [
     {"color": [220, 20, 60], "isthing": 1, "id": 1, "name": "person"},
     {"color": [0, 82, 0], "isthing": 1, "id": 2, "name": "giant_panda"},

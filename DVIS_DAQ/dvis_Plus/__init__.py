@@ -10,6 +10,8 @@ from .ctvis import CTMinVIS, CTCLPlugin
 
 # video
 from .data_video import (
+    PRWVISDatasetMapper,
+    PRWVISEvaluator,
     YTVISDatasetMapper,
     CocoClipDatasetMapper,
     YTVISEvaluator,

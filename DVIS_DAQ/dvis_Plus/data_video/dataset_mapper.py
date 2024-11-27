@@ -28,7 +28,7 @@ from pycocotools import mask as coco_mask
 
 from .augmentation import build_augmentation, build_pseudo_augmentation
 
-from .datasets.ytvis import COCO_TO_YTVIS_2019, COCO_TO_YTVIS_2021, COCO_TO_OVIS
+from .datasets.ytvis import COCO_TO_YTVIS_2019, COCO_TO_YTVIS_2021, COCO_TO_OVIS, COCO_TO_PRW
 
 #__all__ = ["YTVISDatasetMapper", "CocoClipDatasetMapper"]
 
@@ -431,6 +431,8 @@ class CocoClipDatasetMapper:
                 src2tgt = COCO_TO_YTVIS_2021
             elif tgt_dataset_name.startswith("ovis"):
                 src2tgt = COCO_TO_OVIS
+            elif tgt_dataset_name.startswith("prw"):
+                src2tgt = COCO_TO_PRW
             else:
                 raise NotImplementedError
 
