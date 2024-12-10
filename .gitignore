@@ -1,5 +1,7 @@
 localhost*
-datasets*
+datasets/coco
+datasets/prw
+datasets/ytvis_2019
 *.pkl
 prw-data-vis-*
 models/

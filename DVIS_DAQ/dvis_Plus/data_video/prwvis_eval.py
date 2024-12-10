@@ -158,8 +158,12 @@ class PRWVISEvaluator(DatasetEvaluator):
 
             reverse_id_mapping = {v: k for k, v in dataset_id_to_contiguous_id.items()}
             # predictions=list(filter(lambda x: x["category_id"]==0,predictions)) #p
-            for result in predictions:
+            for result in predictions.copy(): #ph
                 category_id = result["category_id"]
+                if(not category_id < num_classes):
+                    predictions.remove(result)
+                    continue
+
                 assert category_id < num_classes, (
                     f"A prediction has class={category_id}, "
                     f"but the dataset only has {num_classes} classes and "
@@ -314,7 +318,7 @@ def _evaluate_predictions_on_coco(
         c.pop("bbox", None)
 
     coco_dt = coco_gt.loadRes(coco_results)
-    coco_eval = YTVOSeval(coco_gt, coco_dt)
+    coco_eval = YTVOSeval(coco_gt, coco_dt, iouType='bbox')
     # For COCO, the default max_dets_per_image is [1, 10, 100].
     max_dets_per_image = [1, 10, 100]  # Default from COCOEval
     coco_eval.params.maxDets = max_dets_per_image
