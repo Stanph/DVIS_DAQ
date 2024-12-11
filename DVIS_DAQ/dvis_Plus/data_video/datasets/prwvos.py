@@ -54,42 +54,65 @@ class PRWVOS:
             assert type(dataset)==dict, 'annotation file format {} not supported'.format(type(dataset))
             print('Done (t={:0.2f}s)'.format(time.time()- tic))
 
-
             #ph 在images和annotations中添加video_id，添加videos，videos中添加image_id，删除segmentation
-            videos={}
-            videoId=0
-            videos_clip={}
-            imageIdToVId={}
-            for img in dataset['images']:
-                video_name=img["file_name"][0:4]
+            # videos={}
+            # videoId=0
+            # videos_clip={}
+            # imageIdToVId={}
+            # instances_anns=defaultdict(list)
+            # instanceId=0
+            # for img in dataset['images']:
+            #     video_name=img["file_name"][0:4]
                 
-                if videos_clip.get(video_name) is None:
-                    videos_clip[video_name]={'clip_num':0}
-                    video_name=video_name+"0"
-                    videos[video_name]={'id':videoId, 'file_names':[], 'image_ids':[], 'width':0, 'height':0, 'length':0}
-                    videoId = videoId+1
-                else:
-                    video_name=video_name+str(videos_clip[video_name]["clip_num"])
-                    if videos[video_name]["length"]>=100: #clip max length
-                        videos_clip[video_name[0:4]]["clip_num"]=videos_clip[video_name[0:4]]["clip_num"]+1
-                        video_name=video_name[0:4]+str(videos_clip[video_name[0:4]]["clip_num"])
-                        videos[video_name]={'id':videoId, 'file_names':[], 'image_ids':[], 'width':0, 'height':0, 'length':0}
-                        videoId = videoId+1
+            #     if videos_clip.get(video_name) is None:
+            #         videos_clip[video_name]={'clip_num':0}
+            #         video_name=video_name+"0"
+            #         videos[video_name]={'id':videoId, 'file_names':[], 'image_ids':[], 'width':0, 'height':0, 'length':0}
+            #         videoId = videoId+1
+            #     else:
+            #         video_name=video_name+str(videos_clip[video_name]["clip_num"])
+            #         if videos[video_name]["length"]>=100: #clip max length
+            #             videos_clip[video_name[0:4]]["clip_num"]=videos_clip[video_name[0:4]]["clip_num"]+1
+            #             video_name=video_name[0:4]+str(videos_clip[video_name[0:4]]["clip_num"])
+            #             videos[video_name]={'id':videoId, 'file_names':[], 'image_ids':[], 'width':0, 'height':0, 'length':0}
+            #             videoId = videoId+1
 
-                img["video_id"]=videos[video_name]['id']
-                imageIdToVId[img["id"]]=img["video_id"]
-                videos[video_name]["file_names"].append(img["file_name"])
-                videos[video_name]["image_ids"].append(img["id"])
-                videos[video_name]["width"]=img["width"]
-                videos[video_name]["height"]=img["height"]
-                videos[video_name]["length"]=videos[video_name]["length"]+1
+            #     img["video_id"]=videos[video_name]['id']
+            #     imageIdToVId[img["id"]]=img["video_id"]
+            #     videos[video_name]["file_names"].append(img["file_name"])
+            #     videos[video_name]["image_ids"].append(img["id"])
+            #     videos[video_name]["width"]=img["width"]
+            #     videos[video_name]["height"]=img["height"]
+            #     videos[video_name]["length"]=videos[video_name]["length"]+1
+                
+            #     for i in reversed(range(len(dataset['annotations']))):
+            #         ann = dataset['annotations'][i]
+            #         if ann['image_id']==img["id"]:
+            #             pid=ann['person_id']
+            #             if instances_anns.get((video_name,pid)) is None:
+            #                 instances_anns[(video_name, pid)]={'id':instanceId, 'video_id':videoId, 'areas':[], 'image_ids':[], 'bboxes':[], 'category_id':1, 'iscrowd':0, 'person_id':pid}
+            #                 instanceId = instanceId + 1
 
-            dataset['imageIdToVId']=imageIdToVId
-            dataset['videos']=videos
-            for ann in dataset['annotations']:
-                ann['video_id']=imageIdToVId[ann['image_id']]
-                # if 'segmentation' in ann:
-                #     ann.pop('segmentation')
+            #             instances_anns[(video_name, pid)]["areas"].append(ann['area'])
+            #             instances_anns[(video_name, pid)]["bboxes"].append(ann['bbox'])
+            #             instances_anns[(video_name, pid)]["image_ids"].append(ann['image_id'])
+            #             del dataset['annotations'][i]
+                        
+            #     for instances_ann in instances_anns:
+            #         if instances_ann[0] == video_name:
+            #             ann = instances_anns.get(instances_ann)
+            #             if ann["image_ids"][-1] != img["id"]:
+            #                 ann["areas"].append(None)
+            #                 ann["bboxes"].append(None)
+            #                 ann["image_ids"].append(None)
+                        
+            # dataset['imageIdToVId']=imageIdToVId
+            # dataset['videos']=videos
+            # annotations = []
+            # for instances_ann in instances_anns:
+            #     annotations.append(instances_anns.get(instances_ann))
+            
+            # dataset['annotations']=annotations
 
             self.dataset = dataset
             self.createIndex()
@@ -121,6 +144,7 @@ class PRWVOS:
 
         if 'annotations' in self.dataset:
             for ann in self.dataset['annotations']:
+                # ann=self.dataset['annotations'].get(ann)
                 vidToAnns[ann['video_id']].append(ann)
                 anns[ann['id']] = ann
 
@@ -140,6 +164,7 @@ class PRWVOS:
 
         if 'annotations' in self.dataset and 'categories' in self.dataset:
             for ann in self.dataset['annotations']:
+                # ann = self.dataset['annotations'].get(ann)
                 catToVids[ann['category_id']].append(ann['video_id'])
 
 

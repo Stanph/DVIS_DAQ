@@ -21,13 +21,13 @@ from .prw import (
 # ==== Predefined splits for PRW ===========
 _PREDEFINED_SPLITS_PRW = {
     "prw_train": ("prw/frames",
-                         "prw/annotation/train_pid.json"),
+                         "prw/annotation/train_pid_vis.json"),
     "prw_val": ("prw/frames",
-                       "prw/annotation/test_pid.json"),
+                       "prw/annotation/test_pid_vis.json"),
     "prw_test": ("prw/frames",
                         "prw/annotation/test_pid.json"),
     "prw_dev": ("prw/frames",
-                       "prw/annotation/train_pid.json"),
+                       "prw/annotation/train_pid_vis.json"),
 }
 
 from .ytvis import (

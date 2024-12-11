@@ -13,8 +13,7 @@ from collections import OrderedDict
 import pycocotools.mask as mask_util
 import torch
 from .datasets.prwvos import PRWVOS
-from .datasets.ytvis_api.ytvos import YTVOS
-from .datasets.ytvis_api.ytvoseval import YTVOSeval
+from .datasets.prwvoseval import PRWVOSeval
 from tabulate import tabulate
 
 import detectron2.utils.comm as comm
@@ -147,7 +146,7 @@ class PRWVISEvaluator(DatasetEvaluator):
         """
         Evaluate predictions. Fill self._results with the metrics of the tasks.
         """
-        self._logger.info("Preparing results for YTVIS format ...")
+        self._logger.info("Preparing results for PRWVIS format ...")
 
         # unmap the category ids for COCO
         if hasattr(self._metadata, "thing_dataset_id_to_contiguous_id"):
@@ -318,7 +317,7 @@ def _evaluate_predictions_on_coco(
         c.pop("bbox", None)
 
     coco_dt = coco_gt.loadRes(coco_results)
-    coco_eval = YTVOSeval(coco_gt, coco_dt, iouType='bbox')
+    coco_eval = PRWVOSeval(coco_gt, coco_dt, iouType='bbox')
     # For COCO, the default max_dets_per_image is [1, 10, 100].
     max_dets_per_image = [1, 10, 100]  # Default from COCOEval
     coco_eval.params.maxDets = max_dets_per_image
