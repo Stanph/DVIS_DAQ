@@ -93,10 +93,10 @@ class PRWVOSeval:
         def _toMask(anns, coco):
             # modify ann['segmentation'] by reference
             for ann in anns:
-                for i, a in enumerate(ann['segmentations']):
-                    if a:
-                        rle = coco.annToRLE(ann, i)
-                        ann['segmentations'][i] = rle
+                # for i, a in enumerate(ann['segmentations']):
+                #     if a:
+                #         rle = coco.annToRLE(ann, i)
+                #         ann['segmentations'][i] = rle
                 l = [a for a in ann['areas'] if a]
                 if len(l)==0:
                   ann['avg_area'] = 0
@@ -111,9 +111,9 @@ class PRWVOSeval:
             dts=self.cocoDt.loadAnns(self.cocoDt.getAnnIds(vidIds=p.vidIds))
 
         # convert ground truth to mask if iouType == 'segm'
-        if p.iouType == 'segm':
-            _toMask(gts, self.cocoGt)
-            _toMask(dts, self.cocoDt)
+        # if p.iouType == 'segm':
+        _toMask(gts, self.cocoGt)
+        _toMask(dts, self.cocoDt)
         # set ignore flag
         for gt in gts:
             gt['ignore'] = gt['ignore'] if 'ignore' in gt else 0
@@ -204,12 +204,12 @@ class PRWVOSeval:
             i = .0
             u = .0
             for d, g in zip(d_seq, g_seq):
-                if d and g:
-                    i += maskUtils.area(maskUtils.merge([d, g], True))
-                    u += maskUtils.area(maskUtils.merge([d, g], False))
-                elif not d and g:
+                if d.any() and g.any():
+                    i += maskUtils.area(maskUtils.merge([d.astype(np.int64), g], True))
+                    u += maskUtils.area(maskUtils.merge([d.astype(np.int64), g], False))
+                elif not d.any() and g.any():
                     u += maskUtils.area(g)
-                elif d and not g:
+                elif d.any() and not g.any():
                     u += maskUtils.area(d)
             if not u > .0:
                 print("Mask sizes in video {} and category {} may not match!".format(vidId, catId))

@@ -114,6 +114,13 @@ class PRWVOS:
             
             # dataset['annotations']=annotations
 
+            #将bboxes转为array
+            annotations=dataset['annotations']
+            for annotation in annotations:
+                array_bboxes=[]
+                for bbox in annotation['bboxes']:
+                    array_bboxes.append(np.array(bbox))
+                annotation['bboxes']=array_bboxes
             self.dataset = dataset
             self.createIndex()
 

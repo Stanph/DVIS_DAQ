@@ -126,17 +126,16 @@ Category ids in annotations are not in [1, #categories]! We'll apply a mapping f
             for anno in anno_dict_list:
                 assert anno["video_id"] == video_id
 
-                if(anno['image_id']!=record['image_ids'][frame_idx]):
-                    continue
-
                 obj = {key: anno[key] for key in ann_keys if key in anno}
 
-                _bboxes = anno.get("bbox", None)
+                _bboxes = anno.get("bboxes", None)
 
-                if not _bboxes:
+                if _bboxes is None:
+                    continue
+                if _bboxes[frame_idx] is None:
                     continue
 
-                bbox = _bboxes
+                bbox = _bboxes[frame_idx]
 
                 obj["bbox"] = bbox
                 obj["bbox_mode"] = BoxMode.XYWH_ABS
