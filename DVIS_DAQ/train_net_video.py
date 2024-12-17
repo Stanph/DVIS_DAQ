@@ -51,6 +51,7 @@ from mask2former_video import add_maskformer2_video_config
 from dvis_Plus import (
     PRWVISDatasetMapper,
     PRWVISEvaluator,
+    YTVISPERSONDatasetMapper,
     YTVISDatasetMapper,
     CocoClipDatasetMapper,
     PanopticDatasetVideoMapper,
@@ -101,6 +102,8 @@ class Trainer(DefaultTrainer):
         mappers = []
         mapper_dict = {
             'prwvideo_instance': PRWVISDatasetMapper,
+            'video_person_instance': YTVISPERSONDatasetMapper,
+
             'video_instance': YTVISDatasetMapper,
             'video_panoptic': PanopticDatasetVideoMapper,
             'video_semantic': SemanticDatasetVideoMapper,
@@ -131,6 +134,8 @@ class Trainer(DefaultTrainer):
     def build_test_loader(cls, cfg, dataset_name, dataset_type):
         mapper_dict = {
             'prwvideo_instance': PRWVISDatasetMapper,
+            'video_person_instance': YTVISPERSONDatasetMapper,
+
             'video_instance': YTVISDatasetMapper,
             'video_panoptic': PanopticDatasetVideoMapper,
             'video_semantic': SemanticDatasetVideoMapper,

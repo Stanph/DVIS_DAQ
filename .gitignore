@@ -4,6 +4,7 @@ datasets/prw
 datasets/ytvis_2019
 *.pkl
 prw-data-vis-*
+ytvis-person*
 models/
 output*
 MinVIS*

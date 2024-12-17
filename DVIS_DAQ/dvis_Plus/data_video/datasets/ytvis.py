@@ -29,6 +29,10 @@ logger = logging.getLogger(__name__)
 
 __all__ = ["load_ytvis_json", "register_ytvis_instances"]
 
+
+COCO_TO_YTVIS_2019_PERSON = {
+    1:1
+}
 COCO_TO_YTVIS_2019 = {
     1:1, 2:21, 3:6, 4:21, 5:28, 7:17, 8:29, 9:34, 17:14, 18:8, 19:18, 21:15, 22:32, 23:20, 24:30, 25:22, 35:33, 36:33, 41:5, 42:27, 43:40
 }
@@ -46,6 +50,10 @@ BDD_SEG_TO_OVIS = {
 COCO_TO_PRW = {
     1:1, 
 }
+
+YTVIS_CATEGORIES_2019_PERSON = [
+    {"color": [220, 20, 60], "isthing": 1, "id": 1, "name": "person"},
+]
 
 YTVIS_CATEGORIES_2019 = [
     {"color": [220, 20, 60], "isthing": 1, "id": 1, "name": "person"},
@@ -175,6 +183,19 @@ BDD_INST_CATEGORIES = [
 ]
 BDD_TRACK_CATEGORIES = BDD_INST_CATEGORIES
 
+def _get_ytvis_2019_person_instances_meta():
+    thing_ids = [k["id"] for k in YTVIS_CATEGORIES_2019_PERSON if k["isthing"] == 1]
+    thing_colors = [k["color"] for k in YTVIS_CATEGORIES_2019_PERSON if k["isthing"] == 1]
+    assert len(thing_ids) == 1, len(thing_ids)
+    # Mapping from the incontiguous YTVIS category id to an id in [0, 39]
+    thing_dataset_id_to_contiguous_id = {k: i for i, k in enumerate(thing_ids)}
+    thing_classes = [k["name"] for k in YTVIS_CATEGORIES_2019_PERSON if k["isthing"] == 1]
+    ret = {
+        "thing_dataset_id_to_contiguous_id": thing_dataset_id_to_contiguous_id,
+        "thing_classes": thing_classes,
+        "thing_colors": thing_colors,
+    }
+    return ret
 
 def _get_ytvis_2019_instances_meta():
     thing_ids = [k["id"] for k in YTVIS_CATEGORIES_2019 if k["isthing"] == 1]
@@ -235,10 +256,15 @@ def _get_bdd_obj_track_meta():
 
 def load_ytvis_json(json_file, image_root, dataset_name=None, extra_annotation_keys=None):
     from .ytvis_api.ytvos import YTVOS
+    from .ytvis_api.ytvosperson import YTVOSPERSON
+
     timer = Timer()
     json_file = PathManager.get_local_path(json_file)
     with contextlib.redirect_stdout(io.StringIO()):
-        ytvis_api = YTVOS(json_file)
+        if dataset_name.startswith("ytvis_2019_person"):
+            ytvis_api = YTVOSPERSON(json_file)
+        else:
+            ytvis_api = YTVOS(json_file)
     if timer.seconds() > 1:
         logger.info("Loading {} takes {:.2f} seconds.".format(json_file, timer.seconds()))
 

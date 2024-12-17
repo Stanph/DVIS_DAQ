@@ -21,24 +21,35 @@ from .prw import (
 # ==== Predefined splits for PRW ===========
 _PREDEFINED_SPLITS_PRW = {
     "prw_train": ("prw/frames",
-                         "prw/annotation/train_pid_vis.json"),
+                         "prw/annotation/train_pid_vis_2.json"),
     "prw_val": ("prw/frames",
-                       "prw/annotation/test_pid_vis.json"),
+                       "prw/annotation/test_pid_vis_2.json"),
     "prw_test": ("prw/frames",
-                        "prw/annotation/test_pid.json"),
+                        "prw/annotation/test_pid_vis_2.json"),
     "prw_dev": ("prw/frames",
-                       "prw/annotation/train_pid_vis.json"),
+                       "prw/annotation/train_pid_vis_2.json"),
 }
 
 from .ytvis import (
     register_ytvis_instances,
     _get_ytvis_2019_instances_meta,
+    _get_ytvis_2019_person_instances_meta,
     _get_ytvis_2021_instances_meta,
     _get_ovis_instances_meta,
     _get_bdd_obj_track_meta,
 )
 
 # from .uninext_ytvis import register_uninext_ytvis_instances
+
+# ==== Predefined splits for YTVIS 2019 PERSON ===========
+_PREDEFINED_SPLITS_YTVIS_2019_PERSON = {
+    "ytvis_2019_person_train": ("ytvis_2019/train/JPEGImages",
+                         "ytvis_2019/train.json"),
+    "ytvis_2019_person_val": ("ytvis_2019/valid/JPEGImages",
+                       "ytvis_2019/valid.json"),
+    "ytvis_2019_person_test": ("ytvis_2019/test/JPEGImages",
+                        "ytvis_2019/test.json"),
+}
 
 # ==== Predefined splits for YTVIS 2019 ===========
 _PREDEFINED_SPLITS_YTVIS_2019 = {
@@ -108,6 +119,16 @@ _PREDEFINED_SPLITS_BDD2OVIS_SEG_TRACK = {
 }
 
 
+def register_all_ytvis_2019_person(root):
+    for key, (image_root, json_file) in _PREDEFINED_SPLITS_YTVIS_2019_PERSON.items():
+        # Assume pre-defined datasets live in `./datasets`.
+        register_ytvis_instances(
+            key,
+            _get_ytvis_2019_person_instances_meta(),
+            os.path.join(root, json_file) if "://" not in json_file else json_file,
+            os.path.join(root, image_root),
+        )
+
 def register_all_ytvis_2019(root):
     for key, (image_root, json_file) in _PREDEFINED_SPLITS_YTVIS_2019.items():
         # Assume pre-defined datasets live in `./datasets`.
@@ -117,7 +138,6 @@ def register_all_ytvis_2019(root):
             os.path.join(root, json_file) if "://" not in json_file else json_file,
             os.path.join(root, image_root),
         )
-
 
 def register_all_ytvis_2021(root):
     for key, (image_root, json_file) in _PREDEFINED_SPLITS_YTVIS_2021.items():
@@ -235,6 +255,7 @@ if __name__.endswith(".builtin"):
     register_all_bdd_seg_track(_root)
     register_all_bdd2ovis_seg_track(_root)
     register_all_prw(_root)
+    register_all_ytvis_2019_person(_root)
     from . import prw
     from . import vps
     from . import vss

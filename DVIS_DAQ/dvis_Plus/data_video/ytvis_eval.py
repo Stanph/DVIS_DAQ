@@ -13,6 +13,7 @@ from collections import OrderedDict
 import pycocotools.mask as mask_util
 import torch
 from .datasets.ytvis_api.ytvos import YTVOS
+from .datasets.ytvis_api.ytvosperson import YTVOSPERSON
 from .datasets.ytvis_api.ytvoseval import YTVOSeval
 from .datasets.pycocotools.oviseval import OVISeval
 from tabulate import tabulate
@@ -92,7 +93,10 @@ class YTVISEvaluator(DatasetEvaluator):
 
         json_file = PathManager.get_local_path(self._metadata.json_file)
         with contextlib.redirect_stdout(io.StringIO()):
-            self._ytvis_api = YTVOS(json_file)
+            if dataset_name=='ytvis_2019_person_train':
+                self._ytvis_api = YTVOSPERSON(json_file)
+            else:
+                self._ytvis_api = YTVOS(json_file)
 
         # Test set json files do not contain annotations (evaluation must be
         # performed using the COCO evaluation server).
@@ -313,8 +317,8 @@ def _evaluate_predictions_on_coco(
         c.pop("bbox", None)
 
     coco_dt = coco_gt.loadRes(coco_results)
-    # coco_eval = YTVOSeval(coco_gt, coco_dt)
-    coco_eval = OVISeval(coco_gt, coco_dt)
+    coco_eval = YTVOSeval(coco_gt, coco_dt)
+    # coco_eval = OVISeval(coco_gt, coco_dt)
     # For COCO, the default max_dets_per_image is [1, 10, 100].
     max_dets_per_image = [1, 10, 100]  # Default from COCOEval
     coco_eval.params.maxDets = max_dets_per_image

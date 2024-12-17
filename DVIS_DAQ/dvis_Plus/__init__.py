@@ -10,6 +10,7 @@ from .ctvis import CTMinVIS, CTCLPlugin
 
 # video
 from .data_video import (
+    YTVISPERSONDatasetMapper,
     PRWVISDatasetMapper,
     PRWVISEvaluator,
     YTVISDatasetMapper,
