@@ -13,13 +13,13 @@ def get_free_gpus()->list:
     gpu_query = subprocess.check_output(['nvidia-smi', '--query-gpu=memory.used', '--format=csv,nounits,noheader'])
     gpu_memory = [int(x) for x in gpu_query.decode('utf-8').split('\n')[:-1]]
     print(gpu_memory)
-    free_gpus = [i for i, mem in enumerate(gpu_memory) if mem < 100000]
+    free_gpus = [i for i, mem in enumerate(gpu_memory) if mem < 14000]
     print(free_gpus)
-    return free_gpus
+    return free_gpus 
 
-def occupy_gpu(gpu_id:int, n, occupy_num, ocpy_gpus, lock, a_dim=40000):
+def occupy_gpu(gpu_id:int, n, occupy_num, ocpy_gpus, lock, a_dim=1):
     with lock:
-        if get_gpu_mem(gpu_id) < 100 and occupy_num.value < n:
+        if get_gpu_mem(gpu_id) < 14000 and occupy_num.value < n:
             import torch
             a = torch.ones((a_dim,a_dim)).cuda(gpu_id)
             ocpy_gpus[occupy_num.value]= gpu_id
@@ -54,7 +54,7 @@ def run_my_program(n, desired_script, processes, ocpy_gpus, occupy_num):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Arguments for Occupy GPUs")
     parser.add_argument(
-        "--n", type=int, default=3, help="Number of GPUs to occupy"
+        "--n", type=int, default=1, help="Number of GPUs to occupy"
     )
     parser.add_argument(
         "--otime", type=int, default=10, help="Time of occupying gpu" 
