@@ -209,13 +209,12 @@ class PRWVOSeval:
                     g_box_xyxy=[g[0]-g[2]/2,g[1]-g[3]/2,g[0]+g[2]/2,g[1]+g[3]/2]
                     i += max((min(d_box_xyxy[2],g_box_xyxy[2])-max(d_box_xyxy[0],g_box_xyxy[0])),0)* \
                         max((min(d_box_xyxy[3],g_box_xyxy[3])-max(d_box_xyxy[1],g_box_xyxy[1])),0)
-                    print(i)
                     u += d[2]*d[3]+g[2]*g[3]-max((min(d_box_xyxy[2],g_box_xyxy[2])-max(d_box_xyxy[0],g_box_xyxy[0])),0)* \
                         max((min(d_box_xyxy[3],g_box_xyxy[3])-max(d_box_xyxy[1],g_box_xyxy[1])),0)
-                elif not d.any() and g.any():
-                    u += g[2]*g[3]
-                elif d.any() and not g.any():
-                    u += d[2]*d[3]
+                # elif not d.any() and g.any():
+                #     u += g[2]*g[3]
+                # elif d.any() and not g.any():
+                #     u += d[2]*d[3]
             # for d, g in zip(d_seq, g_seq):
             #     if d.any() and g.any():
             #         i += maskUtils.area(maskUtils.merge([d.astype(np.int64), g], True))
@@ -321,8 +320,9 @@ class PRWVOSeval:
                     iou = min([t,1-1e-10])
                     m   = -1
                     for gind, g in enumerate(gt):
-                        print('iou:',iou)
-                        print(ious[dind,gind])
+                        # print('iou:',iou)
+                        # print(ious[dind,gind])
+                        
                         # if this gt already matched, and not a crowd, continue
                         if gtm[tind,gind]>0 and not iscrowd[gind]:
                             continue

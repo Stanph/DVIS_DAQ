@@ -68,6 +68,9 @@ class YTVOS:
             dataset = json.load(open(annotation_file, 'r'))
             assert type(dataset)==dict, 'annotation file format {} not supported'.format(type(dataset))
             print('Done (t={:0.2f}s)'.format(time.time()- tic))
+            
+            dataset['videos'] = dataset['videos'][0:2]
+
             self.dataset = dataset
             self.createIndex()
 

@@ -23,6 +23,7 @@ from detectron2.evaluation import DatasetEvaluator
 from detectron2.utils.file_io import PathManager
 from detectron2.utils.logger import create_small_table
 
+from .box_ops import masks_to_boxes,box_cxcywh_to_xyxy, box_xyxy_to_cxcywh,box_xyxy_to_xywh
 
 class PRWVISEvaluator(DatasetEvaluator):
     """
@@ -193,7 +194,7 @@ class PRWVISEvaluator(DatasetEvaluator):
         res = self._derive_coco_results(
             coco_eval, class_names=self._metadata.get("thing_classes")
         )
-        self._results["segm"] = res
+        self._results["bbox"] = res
 
     def _derive_coco_results(self, coco_eval, class_names=None):
         """
@@ -284,6 +285,7 @@ def instances_to_coco_json_video(inputs, outputs):
             mask_util.encode(np.array(_mask[:, :, None], order="F", dtype="uint8"))[0]
             for _mask in m
         ]
+        boxes =[masks_to_boxes(_mask).tolist() for _mask in m]
         for rle in segms:
             rle["counts"] = rle["counts"].decode("utf-8")
 
@@ -292,6 +294,7 @@ def instances_to_coco_json_video(inputs, outputs):
             "score": s,
             "category_id": l,
             "segmentations": segms,
+            "boxes": boxes #ph
         }
         ytvis_results.append(res)
 

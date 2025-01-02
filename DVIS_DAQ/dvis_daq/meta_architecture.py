@@ -715,7 +715,8 @@ class DVIS_DAQ_online(MinVIS):
                 self.sem_seg_head.num_classes, device=self.device
             ).unsqueeze(0).repeat(scores.shape[0], 1).flatten(0, 1)
             # keep top-K predictions
-            scores_per_image, topk_indices = scores.flatten(0, 1).topk(self.max_num, sorted=False)
+            max_num = self.max_num if self.max_num < scores.shape[0] else scores.shape[0]
+            scores_per_image, topk_indices = scores.flatten(0, 1).topk(max_num, sorted=False)
             labels_per_image = labels[topk_indices]
             topk_indices = topk_indices // self.sem_seg_head.num_classes
             pred_masks = pred_masks[topk_indices.to(pred_masks.device)]

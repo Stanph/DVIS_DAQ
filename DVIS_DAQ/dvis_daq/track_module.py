@@ -450,9 +450,9 @@ class VideoInstanceCutter(nn.Module):
                 if self.last_seq_ids is not None and k < len(self.last_seq_ids):
                     seq_id = self.last_seq_ids[k]
                 else:
-                    seq_id = random.randint(0, 100000)
+                    seq_id = random.randint(0, 1000000)
                     while seq_id in self.video_ins_hub:
-                        seq_id = random.randint(0, 100000)
+                        seq_id = random.randint(0, 1000000)
                     assert not seq_id in self.video_ins_hub
                 if valid:
                     if not seq_id in self.video_ins_hub:
@@ -559,9 +559,9 @@ class VideoInstanceCutter(nn.Module):
                 if self.last_seq_ids is not None and k < len(self.last_seq_ids):
                     seq_id = self.last_seq_ids[k]
                 else:
-                    seq_id = random.randint(0, 100000)
+                    seq_id = random.randint(0, 1000000)
                     while seq_id in self.video_ins_hub:
-                        seq_id = random.randint(0, 100000)
+                        seq_id = random.randint(0, 1000000)
                     assert not seq_id in self.video_ins_hub
                 if valid:
                     if not seq_id in self.video_ins_hub:
@@ -701,9 +701,9 @@ class VideoInstanceCutter(nn.Module):
                 if self.last_seq_ids is not None and k < len(self.last_seq_ids):
                     seq_id = self.last_seq_ids[k]
                 else:
-                    seq_id = random.randint(0, 100000)
+                    seq_id = random.randint(0, 1000000)
                     while seq_id in self.video_ins_hub or seq_id in self.memory_seq_ids:
-                        seq_id = random.randint(0, 100000)
+                        seq_id = random.randint(0, 1000000)
                     assert (not seq_id in self.video_ins_hub) and (not seq_id in self.memory_seq_ids)
                 if valid:
                     if not seq_id in self.video_ins_hub:

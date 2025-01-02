@@ -100,6 +100,7 @@ _PREDEFINED_SPLITS_OVIS = {
 }
 
 _PREDEFINED_SPLITS_COCO_VIDEO = {
+    "coco2ytvis2019person_train": ("coco/train2017", "coco/annotations/coco2ytvis2019person_train.json"),
     "coco2ytvis2019_train": ("coco/train2017", "coco/annotations/coco2ytvis2019_train.json"),
     "coco2ytvis2019_val": ("coco/val2017", "coco/annotations/coco2ytvis2019_val.json"),
     "coco2ytvis2021_train": ("coco/train2017", "coco/annotations/coco2ytvis2021_train.json"),

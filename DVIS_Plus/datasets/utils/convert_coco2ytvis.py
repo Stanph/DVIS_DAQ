@@ -4,31 +4,36 @@ import sys
 
 sys.path.append('../..')
 
-from dvis.data_video.datasets.ytvis import (
-    COCO_TO_YTVIS_2019,
-    COCO_TO_YTVIS_2021,
-    COCO_TO_OVIS
-)
-
+# from dvis.data_video.datasets.ytvis import (
+#     COCO_TO_YTVIS_2019,
+#     COCO_TO_YTVIS_2021,
+#     COCO_TO_OVIS
+# )
+COCO_TO_YTVIS_2019_PERSON = {
+    1:1
+}
 _root = os.getenv("DETECTRON2_DATASETS", "datasets")
-_root = os.path.join('../..', _root)
+_root = os.path.join('/home/panh/DVIS_DAQ/', _root)
 
 convert_list = [
-    (COCO_TO_YTVIS_2019, 
+    (COCO_TO_YTVIS_2019_PERSON, 
         os.path.join(_root, "coco/annotations/instances_train2017.json"),
-        os.path.join(_root, "coco/annotations/coco2ytvis2019_train.json"), "COCO to YTVIS 2019:"),
+        os.path.join(_root, "coco2ytvis2019person_train.json"), "COCO to YTVIS 2019person:"),
+    # (COCO_TO_YTVIS_2019, 
+    #     os.path.join(_root, "coco/annotations/instances_train2017.json"),
+    #     os.path.join(_root, "coco/annotations/coco2ytvis2019_train.json"), "COCO to YTVIS 2019:"),
     # (COCO_TO_YTVIS_2019,
     #     os.path.join(_root, "coco/annotations/instances_val2017.json"),
     #     os.path.join(_root, "coco/annotations/coco2ytvis2019_val.json"), "COCO val to YTVIS 2019:"),
-    (COCO_TO_YTVIS_2021, 
-        os.path.join(_root, "coco/annotations/instances_train2017.json"),
-        os.path.join(_root, "coco/annotations/coco2ytvis2021_train.json"), "COCO to YTVIS 2021:"),
+    # (COCO_TO_YTVIS_2021, 
+    #     os.path.join(_root, "coco/annotations/instances_train2017.json"),
+    #     os.path.join(_root, "coco/annotations/coco2ytvis2021_train.json"), "COCO to YTVIS 2021:"),
     # (COCO_TO_YTVIS_2021,
     #     os.path.join(_root, "coco/annotations/instances_val2017.json"),
     #     os.path.join(_root, "coco/annotations/coco2ytvis2021_val.json"), "COCO val to YTVIS 2021:"),
-    (COCO_TO_OVIS, 
-        os.path.join(_root, "coco/annotations/instances_train2017.json"),
-        os.path.join(_root, "coco/annotations/coco2ovis_train.json"), "COCO to OVIS:"),
+    # (COCO_TO_OVIS, 
+    #     os.path.join(_root, "coco/annotations/instances_train2017.json"),
+    #     os.path.join(_root, "coco/annotations/coco2ovis_train.json"), "COCO to OVIS:"),
 ]
 
 for convert_dict, src_path, out_path, msg in convert_list:

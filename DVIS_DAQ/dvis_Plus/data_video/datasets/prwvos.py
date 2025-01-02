@@ -121,6 +121,15 @@ class PRWVOS:
                 for bbox in annotation['bboxes']:
                     array_bboxes.append(np.array(bbox))
                 annotation['bboxes']=array_bboxes
+            
+            # tmp={}
+            # for key, value in dataset['videos'].items():
+            #     if value['id']==2:
+            #         break
+            #     else:
+            #         tmp[key] = value
+            # dataset['videos']=tmp
+            
             self.dataset = dataset
             self.createIndex()
 

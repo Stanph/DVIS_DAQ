@@ -11,27 +11,36 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": false,
-            "env": {
-                "CUDA_VISIBLE_DEVICES": "1"
-            },
-            // prw
+            // "env": {
+            //     "CUDA_VISIBLE_DEVICES": "1"
+            // },
+            // prw vis
             // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/prw/MinVIS_R50.yaml","--resume", "MODEL.WEIGHTS","model_final_3c8ec9.pkl","SOLVER.IMS_PER_BATCH","1"]
             // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/prw/DAQ_Online_R50.yaml","--resume", "MODEL.WEIGHTS","output_DAQ_Online_R50_YTVIS19_160k/model_final.pth","SOLVER.IMS_PER_BATCH","1"]
-            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/prw/DAQ_Online_R50.yaml","--eval-only", "MODEL.WEIGHTS","output_DAQ_Online_R50_YTVIS19_160k_5392/model_final.pth"]
+            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/prw/MinVIS_R50.yaml","--eval-only", "MODEL.WEIGHTS","output_MinVIS_R50_YTVIS19_PERSON/model_final.pth"]
+            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/prw/DAQ_Online_R50.yaml","--eval-only", "MODEL.WEIGHTS","output_DAQ_Online_R50_COCO_YTVIS19_160k_PERSON/model_final.pth"]
+            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/prw/DAQ_Offline_R50.yaml","--eval-only", "MODEL.WEIGHTS","output_DAQ_Offline_R50_COCO_YTVIS19_160k_PERSON/model_final.pth"]
+
+            //prw img
+            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/prw/MinVIS_R50_PRWImg.yaml","--resume", "MODEL.WEIGHTS","model_final_3c8ec9.pkl","SOLVER.IMS_PER_BATCH","1"]
+            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/prw/DAQ_Online_R50_PRWImg.yaml","--resume", "MODEL.WEIGHTS","output_DAQ_Online_R50_YTVIS19_160k/model_final.pth","SOLVER.IMS_PER_BATCH","1"]
+            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/prw/MinVIS_R50_PRWImg.yaml","--eval-only", "MODEL.WEIGHTS","output_MinVIS_R50_YTVIS19_PERSON/model_final.pth"]
+            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/prw/DAQ_Online_R50_PRWImg.yaml","--eval-only", "MODEL.WEIGHTS","output_DAQ_Online_R50_YTVIS19_32k_PERSON/model_final.pth"]
+
 
             // yt person only
-            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/person/MinVIS_R50.yaml","--resume", "MODEL.WEIGHTS","model_final_3c8ec9.pkl","SOLVER.IMS_PER_BATCH","1"]
-            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/person/MinVIS_R50.yaml","--eval-only", "MODEL.WEIGHTS","output_MinVIS_R50_YTVIS19_PERSON/model_final.pth"]
-            "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/person/DAQ_Online_R50.yaml","--eval-only", "MODEL.WEIGHTS","output_DAQ_Online_R50_YTVIS19_160k_PERSON/model_final.pth"]
+            "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/person/MinVIS_R50.yaml","--resume", "MODEL.WEIGHTS","model_final_3c8ec9.pkl","SOLVER.IMS_PER_BATCH","1"]
+            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/person/MinVIS_R50.yaml","--eval-only", "MODEL.WEIGHTS","output_MinVIS_R50_COCO_YTVIS19_PERSON/model_final.pth"]
+            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/person/DAQ_Online_R50.yaml","--eval-only", "MODEL.WEIGHTS","output_DAQ_Online_R50_COCO_YTVIS19_160k_PERSON/model_final.pth"]
 
             // ytvis19
             // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/DAQ_Online_R50_b2.yaml","--resume", "MODEL.WEIGHTS","model_0109999.pth","SOLVER.IMS_PER_BATCH","1"]
             // "args": ["--num-gpus","2","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/DAQ_Online_R50.yaml","--eval-only", "MODEL.WEIGHTS","output_DAQ_Online_R50_YTVIS19_160k/model_0149999.pth"]
-            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/DAQ_Online_R50_b2.yaml","--eval-only", "MODEL.WEIGHTS","output_DAQ_Online_R50_YTVIS19_640k/model_0449999.pth"]
+            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/DAQ_Online_R50_b2.yaml","--eval-only", "MODEL.WEIGHTS","output_DAQ_Online_R50_YTVIS19_640k/model_final.pth"]
 
             // visual
-            // "args": ["--config-file","DVIS_DAQ/configs/dvis_daq/prw/MinVIS_R50.yaml","--input","datasets/prw/frames2","--output","MinVIS_R50_PRW_Visual","--opts","MODEL.WEIGHTS","model_final.pth"]
-            // "args": ["--config-file","DVIS_DAQ/configs/dvis_daq/prw/DAQ_Online_R50.yaml","--input","datasets/prw/frames2","--output","DAQ_Online_R50_PRW_Visual","--opts","MODEL.WEIGHTS","output_DAQ_Online_R50_PRW_160k/model_final.pth"]
+            // "args": ["--config-file","DVIS_DAQ/configs/dvis_daq/prw/MinVIS_R50.yaml","--input","datasets/prw/frames2","--output","MinVIS_R50_PRW_COCO_Visual","--opts","MODEL.WEIGHTS","output_MinVIS_R50_COCO_YTVIS19_PERSON/model_final.pth"]
+            // "args": ["--config-file","DVIS_DAQ/configs/dvis_daq/prw/DAQ_Online_R50.yaml","--input","datasets/prw/frames2","--output","DAQ_Online_R50_PRW_Visual","--opts","MODEL.WEIGHTS","output_DAQ_Online_R50_COCO_YTVIS19_160k_PERSON/model_final.pth"]
 
         }
     ]

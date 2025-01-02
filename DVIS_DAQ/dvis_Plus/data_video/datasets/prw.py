@@ -197,14 +197,15 @@ if __name__ == "__main__":
 
     logger = setup_logger(name=__name__)
     #assert sys.argv[3] in DatasetCatalog.list()
-    meta = MetadataCatalog.get("prw_train")
+    meta = MetadataCatalog.get("prw_val")
 
-    json_file = "./datasets/prw/annotation/test_pid.json"
+    json_file = "./datasets/prw/annotation/test_pid_vis_2.json"
+    # json_file = "output_MinVIS_R50_PRW/inference/results.json"
     image_root = "./datasets/prw/frames"
-    dicts = load_prw_json(json_file, image_root, dataset_name="prw_train")
+    dicts = load_prw_json(json_file, image_root, dataset_name="prw_val")
     logger.info("Done loading {} samples.".format(len(dicts)))
 
-    dirname = "prw-data-vis-test"
+    dirname = "prw-data-vis-test-gt_2"
     os.makedirs(dirname, exist_ok=True)
 
     def extract_frame_dic(dic, frame_idx):
@@ -213,12 +214,17 @@ if __name__ == "__main__":
         annos = frame_dic.get("annotations", None)
         if annos:
             frame_dic["annotations"] = annos[frame_idx]
-
+        for ann in frame_dic["annotations"]:
+            ann['bbox']=ann['bbox'].tolist()
+        frame_dic_annotations = copy.deepcopy(frame_dic["annotations"])
+        for ann in frame_dic_annotations:
+            if ann['bbox']==None:
+                frame_dic["annotations"].remove(ann)
         return frame_dic
 
     for d in dicts:
         vid_name = d["file_names"][0].split('/')[-1].split('.')[-2]
-        logger.info(vid_name+" Done loading {} samples.".format(len(d["file_names"])))
+        logger.info(vid_name+" Done loading {} samples.".format(len(d)))
 
         os.makedirs(os.path.join(dirname, vid_name), exist_ok=True)
         for idx, file_name in enumerate(d["file_names"]):
