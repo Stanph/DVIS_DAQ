@@ -68,9 +68,10 @@ def _get_dummy_anno(num_classes):
         "iscrowd": 0,
         "category_id": -1,
         "id": -1,
+        "person_id": -1,
         "bbox": np.array([0, 0, 0, 0]),
         "bbox_mode": BoxMode.XYXY_ABS,
-        "segmentation": [np.array([0.0] * 6)]
+        # "segmentation": [np.array([0.0] * 6)]
     }
 
 def convert_coco_poly_to_mask(segmentations, height, width):
@@ -348,14 +349,17 @@ class PRWVISDatasetMapper:
             for anno in video_annos[frame_idx]:
                 _anno = {}
                 for k, v in anno.items():
-                    _anno[k] = copy.deepcopy(v)
+                    if k=='bbox':
+                        _anno[k] = copy.deepcopy(v).tolist()
+                    else:
+                        _anno[k] = copy.deepcopy(v)
                 _frame_annos.append(_anno)
 
             # USER: Implement additional transformations if you have other types of data
             annos = [
                 utils.transform_instance_annotations(obj, transforms, image_shape)
                 for obj in _frame_annos
-                if obj.get("iscrowd", 0) == 0
+                if obj.get("iscrowd", 0) == 0 and obj.get('bbox',0)!=None
             ]
             sorted_annos = [_get_dummy_anno(self.num_classes) for _ in range(len(ids))]
 

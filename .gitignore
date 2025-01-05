@@ -7,7 +7,6 @@ prw-data-vis-*
 ytvis-person*
 models/
 output*
-MinVIS*
 DVIS_Plus_*
 *Visual*
 *.pth

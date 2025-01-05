@@ -16,7 +16,8 @@ from detectron2.projects.point_rend.point_features import (
 )
 
 from mask2former.utils.misc import is_dist_avail_and_initialized
-
+from .box_ops import masks_to_boxes,box_cxcywh_to_xyxy, box_xyxy_to_cxcywh,box_xyxy_to_xywh
+from fvcore.nn import giou_loss, smooth_l1_loss
 
 def dice_loss(
         inputs: torch.Tensor,
@@ -188,6 +189,91 @@ class VideoSetCriterion(nn.Module):
         del target_masks
         return losses
 
+    def loss_boxes(self, outputs, targets, indices, num_boxes):
+        """Compute the losses related to the bounding boxes, the L1 regression loss and the GIoU loss
+           targets dicts must contain the key "boxes" containing a tensor of dim [nb_target_boxes, 4]
+           The target boxes are expected in format (center_x, center_y, h, w), normalized by the image size.
+        """
+        src_idx = self._get_src_permutation_idx(indices)
+        src_masks = outputs["pred_masks"]
+        src_masks = src_masks[src_idx]
+        # Modified to handle video
+        target_masks = torch.cat([t['masks'][i] for t, (_, i) in zip(targets, indices)]).to(src_masks)
+
+        # No need to upsample predictions as we are using normalized coordinates :)
+        # NT x 1 x H x W
+        src_masks = src_masks.flatten(0, 1)[:, None]
+        target_masks = target_masks.flatten(0, 1)[:, None]
+
+        # interpolation to original image size
+        src_masks = F.interpolate(
+            src_masks, size=(1080, 1920), mode="bilinear", align_corners=False
+        )
+        src_masks = src_masks > 0.
+        target_masks = F.interpolate(
+            target_masks, size=(1080, 1920), mode="bilinear", align_corners=False
+        )
+        target_masks = target_masks > 0.
+
+        src_boxes = []
+        for _mask in src_masks:
+            box=masks_to_boxes(_mask)
+            x1, y1, x2, y2 = box.unbind(dim=-1)
+            if x1>x2:
+                box[0][0]=box[0][2]
+            if y1>y2:
+                box[0][1]=box[0][3]
+            src_boxes.append(box_xyxy_to_cxcywh(box).tolist())
+        src_boxes=torch.tensor(src_boxes)
+
+        target_boxes=[]
+        for _mask in target_masks:
+            target_boxes.append(box_xyxy_to_cxcywh(masks_to_boxes(_mask)).tolist())
+        target_boxes=torch.tensor(target_boxes)
+
+        
+
+        # del src_masks
+        # del target_masks
+        outputs['pred_boxes']=src_boxes
+        targets[0]['boxes']=target_boxes
+
+        assert 'pred_boxes' in outputs
+
+        src_boxes = outputs['pred_boxes']
+
+        batch_size = len(targets)
+        pred_box_list = []
+        tgt_box_list = []
+        for batch_idx in range(batch_size):
+            valid_query = indices[batch_idx][0]
+            gt_multi_idx = indices[batch_idx][1]
+            if len(gt_multi_idx)==0:
+                continue 
+            # bz_src_boxes = src_boxes[batch_idx]    
+            bz_src_boxes = src_boxes   
+            bz_target_boxes = targets[batch_idx]["boxes"]
+            # pred_box_list.append(bz_src_boxes[valid_query])
+            # tgt_box_list.append(bz_target_boxes[gt_multi_idx])
+            pred_box_list.append(bz_src_boxes)
+            tgt_box_list.append(bz_target_boxes)
+
+        if len(pred_box_list) != 0:
+            src_boxes = torch.cat(pred_box_list)
+            target_boxes = torch.cat(tgt_box_list)
+            num_boxes = src_boxes.shape[0]
+            
+            loss_bbox = F.l1_loss(src_boxes, target_boxes, reduction='none')
+            losses = {}
+            losses['loss_bbox'] = loss_bbox.sum() / num_boxes
+            loss_giou = giou_loss(box_cxcywh_to_xyxy(src_boxes),box_cxcywh_to_xyxy(target_boxes))
+            losses['loss_giou'] = loss_giou.sum() / num_boxes
+        else:
+            losses = {'loss_bbox':outputs['pred_boxes'].sum()*0,
+            'loss_giou':outputs['pred_boxes'].sum()*0}
+        return losses
+
+
     def _get_src_permutation_idx(self, indices):
         # permute predictions following indices
         batch_idx = torch.cat([torch.full_like(src, i) for i, (src, _) in enumerate(indices)])
@@ -204,6 +290,7 @@ class VideoSetCriterion(nn.Module):
         loss_map = {
             'labels': self.loss_labels,
             'masks': self.loss_masks,
+            'boxes': self.loss_boxes
         }
         assert loss in loss_map, f"do you really want to compute {loss} loss?"
         return loss_map[loss](outputs, targets, indices, num_masks)

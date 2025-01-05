@@ -69,7 +69,7 @@ class YTVOS:
             assert type(dataset)==dict, 'annotation file format {} not supported'.format(type(dataset))
             print('Done (t={:0.2f}s)'.format(time.time()- tic))
             
-            dataset['videos'] = dataset['videos'][0:2]
+            # dataset['videos'] = dataset['videos'][0:2]
 
             self.dataset = dataset
             self.createIndex()
