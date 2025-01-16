@@ -15,6 +15,8 @@ def add_minvis_config(cfg):
 
     cfg.MODEL.MASK_FORMER.REID_BRANCH = True
 
+    cfg.MODEL.USE_MOTION = False
+
 def add_dvis_config(cfg):
     cfg.INPUT.REVERSE_AGU = False
     cfg.MODEL.SEM_SEG_HEAD.RETURN_TRANSFORMER_FEATURE = False

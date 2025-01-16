@@ -29,11 +29,14 @@
 
 
             // yt person only
-            "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/person/MinVIS_R50.yaml","--resume", "MODEL.WEIGHTS","model_final_3c8ec9.pkl","SOLVER.IMS_PER_BATCH","1"]
+            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/person/MinVIS_R50.yaml","--resume", "MODEL.WEIGHTS","model_final_3c8ec9.pkl","SOLVER.IMS_PER_BATCH","1"]
             // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/person/MinVIS_R50.yaml","--eval-only", "MODEL.WEIGHTS","output_MinVIS_R50_COCO_YTVIS19_PERSON/model_final.pth"]
+            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/person/DAQ_Online_R50.yaml","--resume", "MODEL.WEIGHTS","output_DAQ_Online_R50_COCO_YTVIS19_160k_PERSON/model_final.pth","SOLVER.IMS_PER_BATCH","1"]
             // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/person/DAQ_Online_R50.yaml","--eval-only", "MODEL.WEIGHTS","output_DAQ_Online_R50_COCO_YTVIS19_160k_PERSON/model_final.pth"]
 
             // ytvis19
+            // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_Plus/ytvis19/MinVIS_R50.yaml","--resume", "MODEL.WEIGHTS","model_final_3c8ec9.pkl","SOLVER.IMS_PER_BATCH","1",  "MODEL.USE_MOTION", "True"]
+            "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_Plus/ytvis19/MinVIS_R50.yaml","--eval-only", "MODEL.WEIGHTS","output_MinVIS_R50_YTVIS19_motion/model_0074999.pth", "MODEL.USE_MOTION", "True"]
             // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/DAQ_Online_R50_b2.yaml","--resume", "MODEL.WEIGHTS","model_0109999.pth","SOLVER.IMS_PER_BATCH","1"]
             // "args": ["--num-gpus","2","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/DAQ_Online_R50.yaml","--eval-only", "MODEL.WEIGHTS","output_DAQ_Online_R50_YTVIS19_160k/model_0149999.pth"]
             // "args": ["--num-gpus","1","--config-file","DVIS_DAQ/configs/dvis_daq/ytvis19/DAQ_Online_R50_b2.yaml","--eval-only", "MODEL.WEIGHTS","output_DAQ_Online_R50_YTVIS19_640k/model_final.pth"]
