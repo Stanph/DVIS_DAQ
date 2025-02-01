@@ -1,6 +1,6 @@
 _BASE_: ../../dvis_Plus/ytvis19/MinVIS_R50.yaml
 MODEL:
-  META_ARCHITECTURE: "DVIS_DAQ_online"
+  META_ARCHITECTURE: "DVIS_DAQ_online_cl" #DVIS_DAQ_online DVIS_DAQ_online_motion
   MASK_FORMER:
     TRANSFORMER_DECODER_NAME: "VideoMultiScaleMaskedTransformerDecoder_dvisPlus"
     REID_BRANCH: True
@@ -31,4 +31,4 @@ INPUT:
 TEST:
   EVAL_PERIOD: 0
 
-OUTPUT_DIR: './output_DAQ_Online_R50_YTVIS19_160k'
+OUTPUT_DIR: './output_DAQ_Online_R50_YTVIS19_cl'
