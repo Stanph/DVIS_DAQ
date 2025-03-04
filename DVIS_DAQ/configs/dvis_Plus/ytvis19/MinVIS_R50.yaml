@@ -86,11 +86,11 @@ INPUT:
 DATASETS:
   DATASET_NEED_MAP: [True, False, ]
   DATASET_TYPE: ['image_instance', 'video_instance', ]
-  DATASET_TYPE_TEST: ['video_instance', ]
+  DATASET_TYPE_TEST: ['video_person_instance', ] #video_instance video_person_instance
   # The categories of all datasets will be mapped to the categories of the last dataset
   DATASET_RATIO: [1.0, 1.0]
   TRAIN: ("coco2ytvis2019_train", "ytvis_2019_train")
-  TEST: ("ytvis_2019_train",) #("ytvis_2019_val",)
+  TEST: ("ytvis_2019_person_train",) #("ytvis_2019_val",) ytvis_2019_person_train
 
 DATALOADER:
   FILTER_EMPTY_ANNOTATIONS: True

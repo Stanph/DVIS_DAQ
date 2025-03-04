@@ -662,7 +662,7 @@ class CTCLPlugin(nn.Module):
                 i, num_images, step=self.sampling_frame_num, device=self.device))
 
         for key in outputs_keys:
-            if key in ['aux_outputs', 'interm_outputs']:
+            if key in ['aux_outputs', 'interm_outputs','image_feats_info']: #ph ['aux_outputs', 'interm_outputs']
                 pass
             else:
                 for i in range(self.sampling_frame_num):

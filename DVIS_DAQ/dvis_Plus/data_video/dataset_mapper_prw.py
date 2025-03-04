@@ -71,7 +71,7 @@ def _get_dummy_anno(num_classes):
         "person_id": -1,
         "bbox": np.array([0, 0, 0, 0]),
         "bbox_mode": BoxMode.XYXY_ABS,
-        # "segmentation": [np.array([0.0] * 6)]
+        "segmentation": [np.array([0.0] * 6)]
     }
 
 def convert_coco_poly_to_mask(segmentations, height, width):
@@ -375,15 +375,18 @@ class PRWVISDatasetMapper:
                 )
             instances.gt_ids = torch.tensor(_gt_ids)
             instances = filter_empty_instances(instances)
-            instances_num = instances.gt_classes.shape[0]
-            mask_tensor = torch.zeros((instances_num,instances._image_size[0],instances._image_size[1]))
-            for idx in range(instances_num):
-                mask_tensor[idx,int(instances.gt_boxes[0].tensor[0][1]):int(instances.gt_boxes[0].tensor[0][3]) , int(instances.gt_boxes[0].tensor[0][0]):int(instances.gt_boxes[0].tensor[0][2]) ] = 1
 
-            mask_tensor = mask_tensor.bool()
-            instances.gt_masks = BitMasks(mask_tensor)
-            # if not instances.has("gt_masks"):
-                # instances.gt_masks = BitMasks(torch.empty((0, *image_shape)))
+            if not instances.has("gt_masks"):
+                instances.gt_masks = BitMasks(torch.empty((0, *image_shape)))
+
+            #box转mask
+            # instances_num = instances.gt_classes.shape[0]
+            # mask_tensor = torch.zeros((instances_num,instances._image_size[0],instances._image_size[1]))
+            # for idx in range(instances_num):
+            #     mask_tensor[idx,int(instances.gt_boxes[0].tensor[0][1]):int(instances.gt_boxes[0].tensor[0][3]) , int(instances.gt_boxes[0].tensor[0][0]):int(instances.gt_boxes[0].tensor[0][2]) ] = 1
+            # mask_tensor = mask_tensor.bool()
+            # instances.gt_masks = BitMasks(mask_tensor)
+            
             dataset_dict["instances"].append(instances)
 
         if not self.is_train:

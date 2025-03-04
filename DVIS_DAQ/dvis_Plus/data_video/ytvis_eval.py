@@ -132,6 +132,11 @@ class YTVISEvaluator(DatasetEvaluator):
         else:
             predictions = self._predictions
 
+        #TODO ph
+        for i in reversed(range(len(predictions))):
+            if predictions[i]["category_id"]>=1:
+                del predictions[i]
+
         if len(predictions) == 0:
             self._logger.warning("[COCOEvaluator] Did not receive valid predictions.")
             return {}

@@ -289,8 +289,8 @@ def load_ytvis_json(json_file, image_root, dataset_name=None, extra_annotation_k
             if "coco" not in dataset_name:
                 logger.warning(
                     """
-Category ids in annotations are not in [1, #categories]! We'll apply a mapping for you.
-"""
+                    Category ids in annotations are not in [1, #categories]! We'll apply a mapping for you.
+                    """
                 )
         id_map = {v: i for i, v in enumerate(cat_ids)}
         meta.thing_dataset_id_to_contiguous_id = id_map

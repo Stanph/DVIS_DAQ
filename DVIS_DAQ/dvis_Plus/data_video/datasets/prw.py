@@ -73,8 +73,8 @@ def load_prw_json(json_file, image_root, dataset_name=None, extra_annotation_key
             if "coco" not in dataset_name:
                 logger.warning(
                     """
-Category ids in annotations are not in [1, #categories]! We'll apply a mapping for you.
-"""
+                    Category ids in annotations are not in [1, #categories]! We'll apply a mapping for you.
+                    """
                 )
         id_map = {v: i for i, v in enumerate(cat_ids)}
         meta.thing_dataset_id_to_contiguous_id = id_map
@@ -129,18 +129,42 @@ Category ids in annotations are not in [1, #categories]! We'll apply a mapping f
                 obj = {key: anno[key] for key in ann_keys if key in anno}
 
                 _bboxes = anno.get("bboxes", None)
+                _segm = anno.get("segmentations", None)
+                _iou = anno.get("ious", None)
+                # print('segm: ', _segm and _segm[frame_idx])
 
                 if _bboxes is None:
                     continue
                 if _bboxes[frame_idx] is None:
                     continue
+                if _segm is None:
+                    continue
+                if _segm[frame_idx] is None:
+                    continue
+                if float(_iou[frame_idx])<0.1:
+                    continue
 
                 bbox = _bboxes[frame_idx]
+                segm = _segm[frame_idx][0]
+                iou = _iou[frame_idx]
 
                 obj["bbox"] = bbox
                 obj["bbox_mode"] = BoxMode.XYWH_ABS
+                obj["iou"]=iou
 
-                num_instances_without_valid_segmentation += 1
+                if isinstance(segm, dict):
+                    if isinstance(segm["counts"], list):
+                        # convert to compressed RLE
+                        segm = mask_util.frPyObjects(segm, *segm["size"])
+                    if isinstance(segm["counts"], str):
+                        segm['counts'] = segm['counts'].encode("utf-8")
+                elif segm:
+                    # filter out invalid polygons (< 3 points)
+                    segm = [poly for poly in segm if len(poly) % 2 == 0 and len(poly) >= 6]
+                    if len(segm) == 0:
+                        num_instances_without_valid_segmentation += 1
+                        continue  # ignore this instance
+                obj["segmentation"] = segm
 
                 if id_map:
                     obj["category_id"] = id_map[obj["category_id"]]

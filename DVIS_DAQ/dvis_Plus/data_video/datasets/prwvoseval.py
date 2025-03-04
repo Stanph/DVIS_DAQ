@@ -211,10 +211,10 @@ class PRWVOSeval:
                         max((min(d_box_xyxy[3],g_box_xyxy[3])-max(d_box_xyxy[1],g_box_xyxy[1])),0)
                     u += d[2]*d[3]+g[2]*g[3]-max((min(d_box_xyxy[2],g_box_xyxy[2])-max(d_box_xyxy[0],g_box_xyxy[0])),0)* \
                         max((min(d_box_xyxy[3],g_box_xyxy[3])-max(d_box_xyxy[1],g_box_xyxy[1])),0)
-                # elif not d.any() and g.any():
-                #     u += g[2]*g[3]
-                # elif d.any() and not g.any():
-                #     u += d[2]*d[3]
+                elif not d.any() and g.any():
+                    u += g[2]*g[3]
+                elif d.any() and not g.any():
+                    u += d[2]*d[3]
             # for d, g in zip(d_seq, g_seq):
             #     if d.any() and g.any():
             #         i += maskUtils.area(maskUtils.merge([d.astype(np.int64), g], True))

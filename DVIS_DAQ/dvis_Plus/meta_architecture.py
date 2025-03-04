@@ -121,7 +121,8 @@ class MinVIS(nn.Module):
                 aux_weight_dict.update({k + f"_{i}": v for k, v in weight_dict.items()})
             weight_dict.update(aux_weight_dict)
 
-        losses = ["labels", "masks", 'boxes']
+        # losses = ["labels", "masks", 'boxes']
+        losses = ["labels", "masks"]
 
         criterion = VideoSetCriterion(
             sem_seg_head.num_classes,
